@@ -1,0 +1,35 @@
+Description:
+    A python program to record TV programs using hdhomerun tuner device.
+    This should run on any system capable of running python. In other
+    words, no other dependencies other than python and apscheduler
+    python module.
+
+    The hdhomerun tuner doesn't need much processing power for recording
+    a program. So this is mainly intended for embedded systems. I use it
+    on my WDTV Live media player.
+
+INSTALL:
+    1. Install python if you don't have it already
+    2. Install apscheduler from here. The old version of apscheduler has
+        some issues, so be sure to install the latest V2 version.
+        (https://bitbucket.org/agronholm/apscheduler)
+    3. Copy three files from this project to some place on your system
+       1. recorder.py: The main python program
+       2. config-file: My config file, replace at least the channelmap section
+                       with your local channels.
+       3. schedule-file: This is an example schedule file. Modify entries
+                         with programs you like to record.
+    4. Copy hdhomerun_config binary to the directory that contains above
+       files
+    5. Run ./recorder.py and watch ./logfile for log output.
+
+WDTV Live player:
+    I use wdlxtv firmware (third party firmware, http://wiki.wdlxtv.com)
+    on my WDTV Live media player.  Since it does not come with python, I use
+    optware bin and installed python using ipkg. Thanks to b-rad!
+
+    Link to Optware for WDLXTV Live media player:
+    http://b-rad.cc/optware-for-wdtv/
+
+    Link to the actual opt.bin (be sure to install python using ipkg):
+    http://b-rad.cc/binaries/opt.bin.tgz

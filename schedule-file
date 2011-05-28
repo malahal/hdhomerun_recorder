@@ -1,0 +1,39 @@
+# Anything after '#' is taken as a comment.
+# schedule syntax:
+# name start-time how-long virtual-channel days
+# name: Name of the program, quote it if you have blanks in it
+# start-time: start time in yyyy-mm-dd hh:mm format
+# how-long: time period to record in minutes
+# virtual-channel: virtual channel (see config-file that has channel mappings)
+# days to record: python weekday numbers, 0 for Monday, 1 for Tuesday,
+#                 2 for Wednesday, 3 for Thursday, 4 for Friday, 5 for Satirday
+#                 and 6 for Sunday. you can put 'once' for one time recording!
+# 
+Oregon_Field_Guide 	"2011-05-20 1:30"  30 10.2 6 # Sunday
+Front_Line 		"2011-05-20 3:00"  60 10.2 3 # Thursday
+
+Curious_George 		"2011-05-20 7:00"  30 10.2 0,1,2,3,4 # Week days
+Super_Why 		"2011-05-20 8:00"  30 10.2 0,1,2,3,4 # Week days
+Dinosaur_Train 		"2011-05-20 8:30"  30 10.2 0,1,2,3,4 # Week days
+Sesame_Street 		"2011-05-20 9:00"  60 10.2 0,1,2,3,4 # Week days
+Sid_The_Science_Kid 	"2011-05-20 10:00" 30 10.2 0,1,2,3,4 # Week days
+Clifford_Big_Red_Dog 	"2011-05-20 10:30" 30 10.2 0,1,2,3,4 # Week days
+Martha_Speaks 		"2011-05-20 11:00" 30 10.2 0,1,2,3,4 # Week days
+Word_World 		"2011-05-20 11:30" 30 10.2 0,1,2,3,4 # Week days
+Bob_The_Builder 	"2011-05-20 14:30" 30 10.2 0,1,2,3,4 # Week days
+#Arthur 		"2011-05-20 15:30" 30 10.2 0,1,2,3,4 # Week days
+Word_Girl 		"2011-05-20 16:00" 30 10.2 0,1,2,3,4 # Week days
+Electric_Company	"2011-05-20 17:00" 30 10.2 0,1,2,3,4 # Week days
+
+Alfred_Hedgehog         "2011-05-21 4:00"  30 22.2 0,1,2,3,4 # Weekdays
+Willas_Wild_Life        "2011-05-21 4:30"  30 22.2 0,1,2,3,4 # Weekdays
+Pearlie        		"2011-05-21 5:00"  30 22.2 0,1,2,3,4 # Weekdays
+Magic_School_Bus    	"2011-05-21 5:30"  30 22.2 0,1,2,3,4 # Weekdays
+Zula_Patrol 		"2011-05-31 15:30" 30 22.2 0,1,2,3,4 # Weekdays
+Rescue_Heroes    	"2011-05-21 18:00" 30 22.2 0,1,2,3,4 # Weekdays
+SheRa_PrincessOfPower 	"2011-05-20 22:00" 60 22.2 0,1,2,3,4 # Weekdays
+
+Jacob_Two_Two 		"2011-05-30 5:00"  30 22.2 5,6 # Weekend
+Babar 			"2011-05-30 5:30"  30 22.2 5,6 # Weekend
+Animal Exploration	"2011-05-31 8:00"  60 22.2 5,6 # Weekend
+Zula_Patrol 		"2011-05-31 9:00"  60 22.2 5,6 # Weekend
