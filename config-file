@@ -1,13 +1,22 @@
 # Follows Python's configparser syntax. Characters '#' or ';' can start
 # a comment. In line comment must be started with ';' though
-[global]
 
+[global]
 logfile = logfile
 media_dir = media 			; directory to store media
 schedule_file = schedule-file
 hdhomerun_config = ./hdhomerun_config 	; executable binary file
+
+# Provide device id and tuner number list. Device id can be IP address
+# of the hdhomerun network tuner.
+#
+# TODO: Use discover command and remove this.
 tuners = 10306B1C:0, 10306B1C:1 	; list of deviceid,tuner numbers
 
+# virtual to actual channel mappings. See
+# http://www.silicondust.com/support/channels/ for more information.
+#
+# TODO: Use scan command and get this info.
 [channelmap]
 17.2 = 8vsb:49, 3 	; KWVT DT
 27.2 = 8vsb:49, 4 	; RetroTV

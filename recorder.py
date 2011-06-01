@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 
 import os, os.path
-import subprocess, time
+import subprocess
 import signal, datetime
 import logging
+import heapq
 
 def main():
     from apscheduler.scheduler import Scheduler
@@ -23,10 +24,9 @@ def main():
     logging.info("Main process PID: %d, use this for sending SIGHUP "
                  "for re-reading the schedule-file", os.getpid())
 
-    tuners = config.get("global", "tuners")
-    tuners = tuners.split(',')
-    global tuner_list
-    tuner_list = [x.split(':') for x in tuners]
+    global tuners
+    tuners = TUNERS(config.get("global", "tuners"))
+
     global hdhomerun_config
     hdhomerun_config = config.get("global", "hdhomerun_config")
 
@@ -87,6 +87,33 @@ def schedule_jobs(sched, schedule_file, channelmap, media_dir):
                         hour=start.hour, minute=start.minute,
                         second=0, name=job.prog_name)
 
+class TUNERS:
+    def __init__(self, str):
+        from threading import Lock
+
+        tuners = "".join(str.split()) # remove white space
+        tuners = tuners.split(',')
+        tuners = [tuple(x.split(':')[0:2]) for x in tuners]
+        # Add priority
+        self.tuner_list = [(i, v[0], v[1]) for i,v in enumerate(tuners)]
+        heapq.heapify(self.tuner_list)
+        self.lock = Lock()
+
+    def get_tuner(self):
+        self.lock.acquire()
+        try:
+            tuner = heapq.heappop(self.tuner_list)
+        except IndexError:
+            tuner = None
+        finally:
+            self.lock.release()
+        return tuner
+
+    def put_tuner(self, tuner):
+        self.lock.acquire()
+        heapq.heappush(self.tuner_list, tuner)
+        self.lock.release()
+
 class JOB:
     def __init__(self, basedir, prog_name, start, period, channel, subchannel):
         self.basedir = os.path.normpath(basedir)
@@ -98,10 +125,21 @@ class JOB:
         self.subchannel = subchannel.strip()
 
     def record(self):
-        # TODO: Use multiple tuners. For now, use the first one
-        # TODO: We should correct stripping at the source.
-        device_id = tuner_list[0][0].strip()
-        tuner_num = tuner_list[0][1].strip()
+        tuner = tuners.get_tuner()
+        if tuner == None:
+            return
+
+        try:
+            (prio, device_id, tuner_num) = tuner
+            self._record(device_id, tuner_num)
+        except:
+            pass
+        finally:
+            tuners.put_tuner(tuner)
+            return
+
+    def _record(self, device_id, tuner_num):
+        import time
 
         now = datetime.datetime.now()
         FORMAT = "%Y-%m-%d %H:%M"
