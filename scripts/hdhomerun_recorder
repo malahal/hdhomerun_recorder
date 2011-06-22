@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+# Actually start the recorder from here
+
+import hdhomerun_recorder.recorder
+
+hdhomerun_recorder.recorder.main()
