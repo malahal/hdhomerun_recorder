@@ -152,18 +152,15 @@ class JOB:
             os.makedirs(dirname)
         filename = os.path.join(dirname, "%s.ts" % date)
         cmd = [hdhomerun_config, device_id, "set"]
-        cmd.append(os.path.join("/tuner%s" % tuner_num, "channel"))
-        cmd.append(self.channel)
+        cmd.extend(["/tuner%s/channel" % tuner_num, self.channel])
         subprocess.Popen(cmd).wait()
 
         cmd = [hdhomerun_config, device_id, "set"]
-        cmd.append(os.path.join("/tuner%s" % tuner_num, "program"))
-        cmd.append(self.subchannel)
+        cmd.extend(["/tuner%s/program" % tuner_num, self.subchannel])
         subprocess.Popen(cmd).wait()
 
         cmd = [hdhomerun_config, device_id, "save"]
-        cmd.append(os.path.join("/tuner%s" % tuner_num))
-        cmd.append(filename)
+        cmd.extend(["/tuner%s" % tuner_num, filename])
         p = subprocess.Popen(cmd)
 
         # Record from now to the end of the program.
