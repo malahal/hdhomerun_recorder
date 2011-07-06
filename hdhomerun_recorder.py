@@ -12,6 +12,7 @@ def main():
 
     config = ConfigParser()
     config.readfp(open('config-file'))
+    global logfile
     logfile = config.get("global", "logfile")
     FORMAT = "%(asctime)-15s: %(message)s"
     logging.basicConfig(level=logging.INFO, filename=logfile, filemode='w',
@@ -140,14 +141,15 @@ class JOB:
             tuners.put_tuner(tuner)
             return
 
+
     def _record(self, device_id, tuner_num):
         import time
+        import tempfile
 
-        now = datetime.datetime.now()
-        FORMAT = "%Y-%m-%d %H:%M"
-        logging.info("Recording %s at %s on channel:(%s,%s)" % (
-                     self.prog_name, now.strftime(FORMAT),
+        logging.info("Started recording %s on device: (%s, %s, %s:%s)" % (
+                     self.prog_name, device_id, tuner_num,
                      self.channel, self.subchannel))
+        now = datetime.datetime.now()
         date = now.strftime("%Y-%m-%d")
         dirname = os.path.join(self.basedir, self.prog_name)
         if not os.path.exists(dirname):
@@ -163,7 +165,8 @@ class JOB:
 
         cmd = [hdhomerun_config, device_id, "save"]
         cmd.extend(["/tuner%s" % tuner_num, filename])
-        p = subprocess.Popen(cmd)
+        f = tempfile.TemporaryFile()
+        p = subprocess.Popen(cmd, stdout=f, stderr=subprocess.STDOUT)
 
         # Record from now to the end of the program.
         now = datetime.datetime.now()
@@ -172,6 +175,16 @@ class JOB:
         timeleft = td.days * 24 * 60 * 60 + td.seconds
         time.sleep(timeleft)
         os.kill(p.pid, signal.SIGKILL)
+        p.wait()
+
+        # Read the output from the save process
+        f.seek(0)
+        data = f.read()
+        f.close()
+        logging.info("Ended recording %s on device: (%s, %s, %s:%s), "
+                     "status: %s" % (
+                     self.prog_name, device_id, tuner_num,
+                     self.channel, self.subchannel, data))
 
 if __name__ == '__main__':
     main()
