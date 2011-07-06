@@ -17,9 +17,11 @@ def main():
     logging.basicConfig(level=logging.INFO, filename=logfile, filemode='w',
                         format=FORMAT)
 
-    # correct time on WDLXTV system, may fail on others 
-    cmd = ["rdate", "ntp.internode.on.net"]
-    subprocess.Popen(cmd).wait()
+    # Set time on WDLXTV systems
+    rdate = "/usr/sbin/rdate"
+    if os.path.exists(rdate) and os.access(rdate, os.X_OK):
+        cmd = [rdate, "ntp.internode.on.net"]
+        subprocess.Popen(cmd).wait()
 
     logging.info("Main process PID: %d, use this for sending SIGHUP "
                  "for re-reading the schedule-file", os.getpid())
