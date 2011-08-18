@@ -174,7 +174,7 @@ class JOB:
               datetime.timedelta(minutes=self.period) - now)
         timeleft = td.days * 24 * 60 * 60 + td.seconds
         time.sleep(timeleft)
-        os.kill(p.pid, signal.SIGKILL)
+        os.kill(p.pid, signal.SIGINT)
         p.wait()
 
         # Read the output from the save process
