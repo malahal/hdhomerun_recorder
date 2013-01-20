@@ -18,33 +18,19 @@ tuners = 10306B1C:0, 10306B1C:1 	; list of deviceid,tuner numbers
 #
 # TODO: Use scan command and get this info.
 [channelmap]
-17.2 = 8vsb:49, 3 	; KWVT DT
-27.2 = 8vsb:49, 4 	; RetroTV
-37.2 = 8vsb:49, 5 	; Azteca
-
-46.1 = 8vsb:46, 1 	; KGWZ-LD
-
-24.1 = 8vsb:45, 3 	; KNMT-D1
-24.2 = 8vsb:45, 4 	; KNMT-D2
-24.3 = 8vsb:45, 5 	; KNMT-D3
-24.4 = 8vsb:45, 6 	; KNMT-D4
-24.5 = 8vsb:45, 7 	; KNMT-D5
-
-2.1  = 8vsb:43, 3 	; KATU-HD
-2.2  = 8vsb:43, 4 	; KATU-SD
-
-6.1  = 8vsb:40, 3 	; KOIN-HD
-
-36.1 = 8vsb:36, 1 	; KEVE
-
-10.1 = 8vsb:10, 3 	; OPB-HD
-10.2 = 8vsb:10, 4 	; OPB
-10.3 = 8vsb:10, 5 	; OPB-Plus
-10.4 = 8vsb:10, 6 	; OPB-FM
-
-22.1 = 8vsb:22, 3 	; ION
-22.2 = 8vsb:22, 4 	; Qubo
-22.3 = 8vsb:22, 5 	; IONLife
-
-49.1 = 8vsb:30, 3 	; KPDX-DT
-12.1 = 8vsb:12, 3 	; KPTV-DT
+#virtual-channel = physical-channel program-number ;name-of-program
+54.1   = 8vsb:49, 3	;KNVA-DT
+54.2   = 8vsb:49, 4	;COOL-TV
+42.1   = 8vsb:43, 1	;KEYE-DT
+42.2   = 8vsb:43, 2	;KEYE-ST
+31.2   = 8vsb:36, 1	;KAKW-DT
+31.1   = 8vsb:36, 2	;KTFO-CD
+24.1   = 8vsb:33, 1	;KVUE-DT
+24.2   = 8vsb:33, 2	;NVUE-TV
+24.3   = 8vsb:33, 3	;KVUE-3
+18.1   = 8vsb:22, 3	;KLRU-HD
+18.2   = 8vsb:22, 4	;KLRU-CR
+18.3   = 8vsb:22, 5	;KLRU-Q
+18.4   = 8vsb:22, 6	;KLRU-VM
+36.1   = 8vsb:21, 3	;KXAN-DT
+7.1    = 8vsb:7, 3	;KTBC-DT
