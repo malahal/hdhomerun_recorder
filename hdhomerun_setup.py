@@ -5,12 +5,14 @@ def channel_iter(file):
         if line.startswith("SCANNING: "):
             channel = line.split()[2].strip('()')
             channel = channel.split(':')[1]
+        elif line.startswith("LOCK: "):
+            modulation = line.split()[1]
         elif line.startswith("PROGRAM "):
             (PROGRAM, subchannel, vchannel, name) = line.split(None, 3)
             subchannel = subchannel.rstrip(':')
             name = name.strip()     # remove new line
             name = name.replace(' ', '-')
-            yield (vchannel, channel, subchannel, name)
+            yield (vchannel, modulation, channel, subchannel, name)
 
 
 def channel_info(hdhomerun_config, device_id, tuner):
@@ -46,13 +48,18 @@ def main():
         sys.exit("couldn't find any channels, quitting!")
 
     print("[global]")
+    print("logfile = logfile")
+    print("media_dir = media")
+    print("schedule_file = schedule-file")
     print("hdhomerun_config = %s" % hdhomerun_config)
     print("tuners = %s:%s" % (device_id, tuner))
     print("[channelmap]")
-    print("# virtual-channel = physical-channel program-number name-of-program")
-    for (vchannel, channel, subchannel, name) in chan_info:
-        line = "%-6s = %-4s %-3s %s" % (vchannel, channel, subchannel, name)
-        print(line)
+    print("#virtual-channel = physical-channel program-number ;name-of-program")
+    for (vchannel, modulation, channel, subchannel, name) in chan_info:
+        line = "%-6s = %s:%s, %s\t;%s" % (vchannel, modulation, channel,
+                                           subchannel, name)
+        if vchannel != '0':
+            print(line)
 
 if __name__ == '__main__':
     main()
