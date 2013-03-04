@@ -8,9 +8,17 @@ import heapq
 
 def main():
     from apscheduler.scheduler import Scheduler
-    from ConfigParser import ConfigParser
 
-    config = ConfigParser()
+    try:
+        from ConfigParser import ConfigParser
+    except ImportError: # python3
+        from configparser import ConfigParser
+
+    try:
+        config = ConfigParser(inline_comment_prefixes=(';',))
+    except TypeError: # not python3
+        config = ConfigParser()
+
     config.readfp(open('config-file'))
     global logfile
     logfile = config.get("global", "logfile")
