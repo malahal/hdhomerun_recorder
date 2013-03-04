@@ -173,7 +173,7 @@ class JOB:
 
         cmd = [hdhomerun_config, device_id, "save"]
         cmd.extend(["/tuner%s" % tuner_num, filename])
-        f = tempfile.TemporaryFile()
+        f = tempfile.TemporaryFile("w+")
         p = subprocess.Popen(cmd, stdout=f, stderr=subprocess.STDOUT)
 
         # Record from now to the end of the program.
