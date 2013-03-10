@@ -1,4 +1,0 @@
-include README
-include recorder/config-file
-include recorder/schedule-file
-include bin/hdhomerun_recorder

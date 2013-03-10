@@ -1,6 +1,0 @@
-1. hdhomerun_setup.py: Make it interactive and get all info
-   automatically as much aspossible.
-2. Store absolute path for hdhomerun_config binary.
-3. Bug: key error if the channel scheduled is not in config file.
-4. Store recording status (dots or errors) as it is recorded instead of
-   waiting for the whole recording to be completed.

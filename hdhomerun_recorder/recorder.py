@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import os, os.path
+import sys, os, os.path
 import subprocess
 import signal, datetime
 import logging
@@ -8,6 +8,9 @@ import heapq
 
 def main():
     from apscheduler.scheduler import Scheduler
+
+    if len(sys.argv) != 2:
+        sys.exit("usage: %s <config-file>" % sys.argv[0])
 
     try:
         from ConfigParser import ConfigParser
@@ -19,7 +22,7 @@ def main():
     except TypeError: # not python3
         config = ConfigParser()
 
-    config.readfp(open('config-file'))
+    config.readfp(open(sys.argv[1]))
     global logfile
     logfile = config.get("global", "logfile")
     FORMAT = "%(asctime)-15s: %(message)s"
@@ -49,19 +52,30 @@ def main():
         channelmap[opt] = config.get("channelmap", opt).split(",")
 
     while True:
-        global reload_jobs
+        global reload_jobs, shutdown
         reload_jobs = False
+        shutdown = False
         sched = Scheduler(misfire_grace_time=60, daemonic=False)
         sched.start()
         signal.signal(signal.SIGHUP, sighup_handler)
+        signal.signal(signal.SIGTERM, sigterm_handler)
         schedule_jobs(sched, schedule_file, channelmap, media_dir)
-        while not reload_jobs:
+        while not (reload_jobs or shutdown):
             signal.pause()
         sched.shutdown()
+        if shutdown:
+            sys.exit(0)
 
 def sighup_handler(signum, frame):
     global reload_jobs
+    logging.info("Received SIGHUP, reloading schedule-file")
     reload_jobs = True
+
+def sigterm_handler(signum, frame):
+    # TODO: Kill any recorder threads?
+    logging.info("Received SIGTERM, shutting down")
+    global shutdown
+    shutdown = True
 
 def schedule_jobs(sched, schedule_file, channelmap, media_dir):
     import shlex

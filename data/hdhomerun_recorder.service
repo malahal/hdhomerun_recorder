@@ -1,0 +1,11 @@
+[Unit]
+Description=Hdhomerun tuner recording service
+After=openntpd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/hdhomerun_recorder /etc/hdhomerun_recorder/config-file
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
